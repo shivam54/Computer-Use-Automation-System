@@ -1,0 +1,138 @@
+{
+  "capabilityId": "8e7e05ba-755a-4b93-b436-c72d0382cb2e",
+  "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+  "correlationId": "618aee9b-4fa9-49c5-af33-c95661a570e9",
+  "artifactVersion": "1.0.0",
+  "startedAt": "2026-09-02T07:56:50.777Z",
+  "status": "success",
+  "completedAt": "2026-09-02T07:56:51.230Z",
+  "outputs": {
+    "savingsBalance": "12450.75",
+    "memberName": "Jane Doe",
+    "memberStatus": "active"
+  },
+  "replayMeta": {
+    "durationMs": 453,
+    "stepsExecuted": 7,
+    "stepsTotal": 7,
+    "locatorFallbacksUsed": 0
+  },
+  "runLog": [
+    {
+      "timestamp": "2026-09-02T07:56:50.777Z",
+      "dateTime": "2026-09-02 00:56:50.777",
+      "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+      "phase": "replay",
+      "message": "Starting replay",
+      "level": "info",
+      "data": {
+        "capabilityId": "8e7e05ba-755a-4b93-b436-c72d0382cb2e",
+        "capabilityName": "lookup_member_savings_balance",
+        "artifactVersion": "1.0.0",
+        "artifactStatus": "approved",
+        "correlationId": "618aee9b-4fa9-49c5-af33-c95661a570e9",
+        "parameters": {
+          "username": "shivam",
+          "password": "[REDACTED]",
+          "memberId": "12345"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-09-02T07:56:50.803Z",
+      "dateTime": "2026-09-02 00:56:50.803",
+      "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+      "phase": "replay",
+      "message": "Fill User ID",
+      "level": "info",
+      "stepId": "step-1",
+      "action": "fill"
+    },
+    {
+      "timestamp": "2026-09-02T07:56:50.878Z",
+      "dateTime": "2026-09-02 00:56:50.878",
+      "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+      "phase": "replay",
+      "message": "Fill Password",
+      "level": "info",
+      "stepId": "step-2",
+      "action": "fill"
+    },
+    {
+      "timestamp": "2026-09-02T07:56:50.889Z",
+      "dateTime": "2026-09-02 00:56:50.889",
+      "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+      "phase": "replay",
+      "message": "Click Sign In",
+      "level": "info",
+      "stepId": "step-3",
+      "action": "click"
+    },
+    {
+      "timestamp": "2026-09-02T07:56:50.938Z",
+      "dateTime": "2026-09-02 00:56:50.938",
+      "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+      "phase": "replay",
+      "message": "Already logged in (Sign Out visible, Welcome Operator). Next step is to click Member Account Inquiry to proceed to member lookup.",
+      "level": "info",
+      "stepId": "step-4",
+      "action": "click"
+    },
+    {
+      "timestamp": "2026-09-02T07:56:51.025Z",
+      "dateTime": "2026-09-02 00:56:51.025",
+      "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+      "phase": "replay",
+      "message": "Switch to workframe iframe",
+      "level": "info",
+      "stepId": "step-5",
+      "action": "switch_frame"
+    },
+    {
+      "timestamp": "2026-09-02T07:56:51.026Z",
+      "dateTime": "2026-09-02 00:56:51.026",
+      "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+      "phase": "replay",
+      "message": "We're inside the workframe with the Member Number field visible. Fill it with the member ID 12345.",
+      "level": "info",
+      "stepId": "step-6",
+      "action": "fill"
+    },
+    {
+      "timestamp": "2026-09-02T07:56:51.029Z",
+      "dateTime": "2026-09-02 00:56:51.029",
+      "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+      "phase": "replay",
+      "message": "Click Search button",
+      "level": "info",
+      "stepId": "step-7",
+      "action": "click"
+    },
+    {
+      "timestamp": "2026-09-02T07:56:51.230Z",
+      "dateTime": "2026-09-02 00:56:51.230",
+      "runId": "20548287-17ce-405f-bf38-c688ce499db8",
+      "phase": "replay",
+      "message": "Replay succeeded",
+      "level": "info",
+      "data": {
+        "outputs": {
+          "savingsBalance": "12450.75",
+          "memberName": "Jane Doe",
+          "memberStatus": "active"
+        }
+      }
+    }
+  ],
+  "dateTime": {
+    "started": "2026-09-02 00:56:50.777",
+    "completed": "2026-09-02 00:56:51.230"
+  },
+  "phase": "replay",
+  "parameters": {
+    "username": "shivam",
+    "password": "[REDACTED]",
+    "memberId": "12345"
+  },
+  "mode": "success"
+}

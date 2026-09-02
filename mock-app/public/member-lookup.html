@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Member Account Inquiry</title>
+  <style>
+    body { font-family: Tahoma, sans-serif; background: #f0f0f0; margin: 8px; font-size: 13px; }
+    table { border-collapse: collapse; }
+    td, th { padding: 4px 8px; border: 1px solid #808080; }
+    th { background: #003366; color: white; text-align: left; }
+    input[type=text] { padding: 3px; border: 1px inset #808080; width: 120px; }
+    input[type=button] { background: #d4d0c8; border: 2px outset #d4d0c8; padding: 2px 12px; cursor: pointer; }
+    .result { margin-top: 12px; display: none; }
+    .error-box { background: #ffcccc; border: 1px solid red; padding: 8px; margin-top: 8px; display: none; }
+    .status-active { color: green; }
+    .status-frozen { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <table>
+    <tr><th colspan="2">Member Account Inquiry</th></tr>
+    <tr>
+      <td>Member Number:</td>
+      <td><input type="text" maxlength="10"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><input type="button" value="Search" onclick="searchMember()"></td>
+    </tr>
+  </table>
+
+  <div class="error-box">
+    <b>Error:</b> <span class="error-text"></span>
+  </div>
+
+  <div class="result">
+    <table>
+      <tr><th colspan="2">Account Details</th></tr>
+      <tr><td>Member Name:</td><td class="val-name"></td></tr>
+      <tr><td>Member Number:</td><td class="val-id"></td></tr>
+      <tr><td>Status:</td><td class="val-status"></td></tr>
+      <tr><td>Savings Balance:</td><td class="val-savings"></td></tr>
+      <tr><td>Checking Balance:</td><td class="val-checking"></td></tr>
+    </table>
+  </div>
+
+  <script>
+    function setField(className, value) {
+      const el = document.querySelector('.' + className);
+      if (el) el.textContent = value;
+    }
+
+    async function searchMember() {
+      const memberId = document.querySelector('table input[type=text]').value.trim();
+      document.querySelector('.error-box').style.display = 'none';
+      document.querySelector('.result').style.display = 'none';
+
+      if (!memberId) {
+        showError('Please enter a member number');
+        return;
+      }
+
+      const res = await fetch('/api/member/' + encodeURIComponent(memberId));
+      const data = await res.json();
+
+      if (!data.ok) {
+        showError(data.message || 'Member not found');
+        return;
+      }
+
+      setField('val-name', data.name);
+      setField('val-id', data.memberId);
+      const statusEl = document.querySelector('.val-status');
+      statusEl.textContent = data.status;
+      statusEl.className = 'val-status ' + (data.status === 'active' ? 'status-active' : 'status-frozen');
+      setField('val-savings', '$' + data.savings.toFixed(2));
+      setField('val-checking', '$' + data.checking.toFixed(2));
+      document.querySelector('.result').style.display = 'block';
+    }
+
+    function showError(msg) {
+      document.querySelector('.error-text').textContent = msg;
+      document.querySelector('.error-box').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

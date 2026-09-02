@@ -1,0 +1,121 @@
+{
+  "capabilityId": "8e7e05ba-755a-4b93-b436-c72d0382cb2e",
+  "runId": "b640ec67-7e64-43f9-b1db-0b1e0f532a1e",
+  "correlationId": "618aee9b-4fa9-49c5-af33-c95661a570e9",
+  "artifactVersion": "1.0.0",
+  "startedAt": "2026-09-02T07:57:02.066Z",
+  "status": "business_outcome",
+  "completedAt": "2026-09-02T07:57:02.467Z",
+  "outcomeCode": "MEMBER_NOT_FOUND",
+  "outcomeMessage": "No member found",
+  "evidencePath": "evidence/screenshots/replay-MEMBER_NOT_FOUND-b640ec67-7e64-43f9-b1db-0b1e0f532a1e.png",
+  "replayMeta": {
+    "durationMs": 401,
+    "stepsExecuted": 7,
+    "stepsTotal": 7,
+    "locatorFallbacksUsed": 0
+  },
+  "runLog": [
+    {
+      "timestamp": "2026-09-02T07:57:02.066Z",
+      "dateTime": "2026-09-02 00:57:02.066",
+      "runId": "b640ec67-7e64-43f9-b1db-0b1e0f532a1e",
+      "phase": "replay",
+      "message": "Starting replay",
+      "level": "info",
+      "data": {
+        "capabilityId": "8e7e05ba-755a-4b93-b436-c72d0382cb2e",
+        "capabilityName": "lookup_member_savings_balance",
+        "artifactVersion": "1.0.0",
+        "artifactStatus": "approved",
+        "correlationId": "618aee9b-4fa9-49c5-af33-c95661a570e9",
+        "parameters": {
+          "username": "shivam",
+          "password": "[REDACTED]",
+          "memberId": "99999"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-09-02T07:57:02.074Z",
+      "dateTime": "2026-09-02 00:57:02.074",
+      "runId": "b640ec67-7e64-43f9-b1db-0b1e0f532a1e",
+      "phase": "replay",
+      "message": "Fill User ID",
+      "level": "info",
+      "stepId": "step-1",
+      "action": "fill"
+    },
+    {
+      "timestamp": "2026-09-02T07:57:02.094Z",
+      "dateTime": "2026-09-02 00:57:02.094",
+      "runId": "b640ec67-7e64-43f9-b1db-0b1e0f532a1e",
+      "phase": "replay",
+      "message": "Fill Password",
+      "level": "info",
+      "stepId": "step-2",
+      "action": "fill"
+    },
+    {
+      "timestamp": "2026-09-02T07:57:02.104Z",
+      "dateTime": "2026-09-02 00:57:02.104",
+      "runId": "b640ec67-7e64-43f9-b1db-0b1e0f532a1e",
+      "phase": "replay",
+      "message": "Click Sign In",
+      "level": "info",
+      "stepId": "step-3",
+      "action": "click"
+    },
+    {
+      "timestamp": "2026-09-02T07:57:02.129Z",
+      "dateTime": "2026-09-02 00:57:02.129",
+      "runId": "b640ec67-7e64-43f9-b1db-0b1e0f532a1e",
+      "phase": "replay",
+      "message": "Already logged in (Sign Out visible, Welcome Operator). Next step is to click Member Account Inquiry to proceed to member lookup.",
+      "level": "info",
+      "stepId": "step-4",
+      "action": "click"
+    },
+    {
+      "timestamp": "2026-09-02T07:57:02.224Z",
+      "dateTime": "2026-09-02 00:57:02.224",
+      "runId": "b640ec67-7e64-43f9-b1db-0b1e0f532a1e",
+      "phase": "replay",
+      "message": "Switch to workframe iframe",
+      "level": "info",
+      "stepId": "step-5",
+      "action": "switch_frame"
+    },
+    {
+      "timestamp": "2026-09-02T07:57:02.225Z",
+      "dateTime": "2026-09-02 00:57:02.225",
+      "runId": "b640ec67-7e64-43f9-b1db-0b1e0f532a1e",
+      "phase": "replay",
+      "message": "We're inside the workframe with the Member Number field visible. Fill it with the member ID 12345.",
+      "level": "info",
+      "stepId": "step-6",
+      "action": "fill"
+    },
+    {
+      "timestamp": "2026-09-02T07:57:02.229Z",
+      "dateTime": "2026-09-02 00:57:02.229",
+      "runId": "b640ec67-7e64-43f9-b1db-0b1e0f532a1e",
+      "phase": "replay",
+      "message": "Click Search button",
+      "level": "info",
+      "stepId": "step-7",
+      "action": "click"
+    }
+  ],
+  "dateTime": {
+    "started": "2026-09-02 00:57:02.066",
+    "completed": "2026-09-02 00:57:02.467"
+  },
+  "phase": "replay",
+  "parameters": {
+    "username": "shivam",
+    "password": "[REDACTED]",
+    "memberId": "99999"
+  },
+  "mode": "not-found"
+}

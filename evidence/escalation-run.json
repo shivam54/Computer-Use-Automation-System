@@ -1,0 +1,176 @@
+{
+  "requestId": "dc8eccf4-3534-41bf-b8be-327cfdd183bd",
+  "sessionId": "escalation-evidence-1788337717054",
+  "reason": "Demo: operator assistance required before member search",
+  "screenshotPath": "evidence/screenshots/escalation-handoff-dc8eccf4-3534-41bf-b8be-327cfdd183bd.png",
+  "humanActions": [
+    {
+      "timestamp": "2026-09-02T08:28:37.158Z",
+      "action": "navigate",
+      "description": "Operator navigated to login and signed in manually"
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.158Z",
+      "action": "click",
+      "description": "Operator opened Member Account Inquiry"
+    }
+  ],
+  "replayStatus": "success",
+  "replayOutputs": {
+    "savingsBalance": "12450.75",
+    "memberName": "Jane Doe",
+    "memberStatus": "active"
+  },
+  "timestamp": "2026-09-02T08:28:37.521Z",
+  "runLog": [
+    {
+      "timestamp": "2026-09-02T08:28:37.135Z",
+      "dateTime": "2026-09-02 01:28:37.135",
+      "runId": "escalation-evidence-1788337717054",
+      "phase": "escalation",
+      "message": "Navigated to entry URL for escalation demo",
+      "level": "info",
+      "data": {
+        "url": "http://localhost:3847"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.158Z",
+      "dateTime": "2026-09-02 01:28:37.158",
+      "runId": "escalation-evidence-1788337717054",
+      "phase": "escalation",
+      "message": "Automation paused — human has control",
+      "level": "warn",
+      "data": {
+        "requestId": "dc8eccf4-3534-41bf-b8be-327cfdd183bd"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.158Z",
+      "dateTime": "2026-09-02 01:28:37.158",
+      "runId": "escalation-evidence-1788337717054",
+      "phase": "escalation",
+      "message": "Control returned to automation",
+      "level": "info",
+      "data": {
+        "actionsRecorded": 2
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.521Z",
+      "dateTime": "2026-09-02 01:28:37.521",
+      "runId": "escalation-evidence-1788337717054",
+      "phase": "escalation",
+      "message": "Replay after handback completed",
+      "level": "info",
+      "data": {
+        "status": "success"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.158Z",
+      "dateTime": "2026-09-02 01:28:37.158",
+      "runId": "19ffc643-a03e-4a0f-9249-7b2befa2ac6c",
+      "phase": "replay",
+      "message": "Starting replay",
+      "level": "info",
+      "data": {
+        "capabilityId": "b6f83f56-7ace-4f40-b1da-66469c13e8c6",
+        "capabilityName": "lookup_member_savings_balance",
+        "artifactVersion": "1.0.0",
+        "artifactStatus": "approved",
+        "correlationId": "e516d752-690d-40f0-bae3-3ff310c90844",
+        "parameters": {
+          "username": "shivam",
+          "password": "[REDACTED]",
+          "memberId": "12345"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.163Z",
+      "dateTime": "2026-09-02 01:28:37.163",
+      "runId": "19ffc643-a03e-4a0f-9249-7b2befa2ac6c",
+      "phase": "replay",
+      "message": "Fill User ID",
+      "level": "info",
+      "stepId": "step-1",
+      "action": "fill"
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.178Z",
+      "dateTime": "2026-09-02 01:28:37.178",
+      "runId": "19ffc643-a03e-4a0f-9249-7b2befa2ac6c",
+      "phase": "replay",
+      "message": "Fill Password",
+      "level": "info",
+      "stepId": "step-2",
+      "action": "fill"
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.187Z",
+      "dateTime": "2026-09-02 01:28:37.187",
+      "runId": "19ffc643-a03e-4a0f-9249-7b2befa2ac6c",
+      "phase": "replay",
+      "message": "Click Sign In",
+      "level": "info",
+      "stepId": "step-3",
+      "action": "click"
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.221Z",
+      "dateTime": "2026-09-02 01:28:37.221",
+      "runId": "19ffc643-a03e-4a0f-9249-7b2befa2ac6c",
+      "phase": "replay",
+      "message": "Already logged in. Next step is to click Member Account Inquiry to proceed to member lookup.",
+      "level": "info",
+      "stepId": "step-4",
+      "action": "click"
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.319Z",
+      "dateTime": "2026-09-02 01:28:37.319",
+      "runId": "19ffc643-a03e-4a0f-9249-7b2befa2ac6c",
+      "phase": "replay",
+      "message": "Switch to workframe iframe",
+      "level": "info",
+      "stepId": "step-5",
+      "action": "switch_frame"
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.319Z",
+      "dateTime": "2026-09-02 01:28:37.319",
+      "runId": "19ffc643-a03e-4a0f-9249-7b2befa2ac6c",
+      "phase": "replay",
+      "message": "We're inside the workframe with the Member Number field visible. Fill it with the member ID 12345.",
+      "level": "info",
+      "stepId": "step-6",
+      "action": "fill"
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.323Z",
+      "dateTime": "2026-09-02 01:28:37.323",
+      "runId": "19ffc643-a03e-4a0f-9249-7b2befa2ac6c",
+      "phase": "replay",
+      "message": "Click Search button",
+      "level": "info",
+      "stepId": "step-7",
+      "action": "click"
+    },
+    {
+      "timestamp": "2026-09-02T08:28:37.521Z",
+      "dateTime": "2026-09-02 01:28:37.521",
+      "runId": "19ffc643-a03e-4a0f-9249-7b2befa2ac6c",
+      "phase": "replay",
+      "message": "Replay succeeded",
+      "level": "info",
+      "data": {
+        "outputs": {
+          "savingsBalance": "12450.75",
+          "memberName": "Jane Doe",
+          "memberStatus": "active"
+        }
+      }
+    }
+  ]
+}

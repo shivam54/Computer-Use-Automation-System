@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test-and-replay-canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Replay canary (mock app)
+        run: |
+          npm run mock-app &
+          MOCK_PID=$!
+          sleep 2
+          npm run demo
+          npm run demo not-found
+          npm run demo frozen
+          npm run demo:recoverable
+          kill $MOCK_PID || true

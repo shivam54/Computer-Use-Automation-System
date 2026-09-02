@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shivam CU - Operator Login</title>
+  <style>
+    body { font-family: Tahoma, sans-serif; background: #c0c0c0; margin: 0; }
+    .header { background: #003366; color: white; padding: 8px 16px; font-size: 14px; }
+    .container { width: 400px; margin: 60px auto; background: #f0f0f0; border: 2px solid #808080; padding: 20px; }
+    table { width: 100%; }
+    td { padding: 6px; font-size: 13px; }
+    input[type=text], input[type=password] { width: 100%; padding: 4px; border: 1px inset #808080; }
+    input[type=submit] { background: #d4d0c8; border: 2px outset #d4d0c8; padding: 4px 16px; cursor: pointer; }
+    .error { color: red; font-size: 12px; display: none; }
+  </style>
+</head>
+<body>
+  <div class="header">Shivam Credit Union &mdash; Back Office System v2.4.1</div>
+  <div class="container">
+    <table>
+      <tr><td colspan="2"><b>Operator Sign-In</b></td></tr>
+      <tr><td>User ID:</td><td><input type="text" name="username"></td></tr>
+      <tr><td>Password:</td><td><input type="password" name="password"></td></tr>
+      <tr><td colspan="2" align="right"><input type="submit" value="Sign In" onclick="doLogin(); return false;"></td></tr>
+      <tr><td colspan="2"><span class="error">Invalid credentials</span></td></tr>
+    </table>
+  </div>
+  <script>
+    async function doLogin() {
+      const username = document.querySelector('input[type=text]').value;
+      const password = document.querySelector('input[type=password]').value;
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password)
+      });
+      const data = await res.json();
+      if (data.ok) {
+        sessionStorage.setItem('sessionId', data.sessionId);
+        window.location.href = '/main.html';
+      } else {
+        document.querySelector('.error').style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

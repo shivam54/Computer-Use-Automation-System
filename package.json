@@ -1,0 +1,39 @@
+{
+  "name": "interface-computer-use",
+  "version": "1.0.0",
+  "description": "Computer-use automation: LLM discovers UI flows, records reusable capabilities, replays deterministically",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "mock-app": "tsx mock-app/server.ts",
+    "discover": "tsx src/cli/discover.ts",
+    "replay": "tsx src/cli/replay.ts",
+    "escalate": "tsx src/cli/escalate.ts",
+    "demo": "tsx src/cli/demo.ts",
+    "demo:recoverable": "tsx src/cli/demo-recoverable.ts",
+    "demo:escalate": "tsx src/cli/demo-escalate.ts",
+    "demo:escalate-replay": "tsx src/cli/demo-escalate-replay.ts",
+    "artifact:approve": "tsx src/cli/approve-artifact.ts",
+    "evidence:backfill": "node scripts/backfill-evidence-logs.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.77.0",
+    "playwright": "^1.49.1",
+    "sharp": "^0.35.4",
+    "uuid": "^11.0.3",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

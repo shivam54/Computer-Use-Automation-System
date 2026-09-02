@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Sub-Account</title>
+  <style>
+    body { font-family: Tahoma, sans-serif; background: #f0f0f0; margin: 8px; font-size: 13px; }
+    table { border-collapse: collapse; }
+    td, th { padding: 4px 8px; border: 1px solid #808080; }
+    th { background: #003366; color: white; text-align: left; }
+    input, select { padding: 3px; border: 1px inset #808080; }
+    input[type=button] { background: #d4d0c8; border: 2px outset #d4d0c8; padding: 2px 12px; cursor: pointer; }
+    .confirm { margin-top: 12px; display: none; background: #ccffcc; border: 1px solid green; padding: 8px; }
+    .error-box { background: #ffcccc; border: 1px solid red; padding: 8px; margin-top: 8px; display: none; }
+  </style>
+</head>
+<body>
+  <table>
+    <tr><th colspan="2">Open New Sub-Account</th></tr>
+    <tr>
+      <td>Member Number:</td>
+      <td><input type="text" id="sub_member_id" maxlength="10"></td>
+    </tr>
+    <tr>
+      <td>Account Type:</td>
+      <td>
+        <select id="sub_account_type">
+          <option value="savings">Savings</option>
+          <option value="checking">Checking</option>
+          <option value="money_market">Money Market</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><input type="button" value="Submit Request" onclick="submitSubAccount()"></td>
+    </tr>
+  </table>
+
+  <div class="error-box" id="sub_error">
+    <b>Error:</b> <span id="sub_error_text"></span>
+  </div>
+
+  <div class="confirm" id="confirm_panel">
+    <b>Confirmation</b><br>
+    Confirmation Number: <span id="conf_number"></span><br>
+    Status: Request submitted successfully
+  </div>
+
+  <script>
+    async function submitSubAccount() {
+      const memberId = document.getElementById('sub_member_id').value.trim();
+      const accountType = document.getElementById('sub_account_type').value;
+      document.getElementById('sub_error').style.display = 'none';
+      document.getElementById('confirm_panel').style.display = 'none';
+
+      const res = await fetch('/api/sub-account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'memberId=' + encodeURIComponent(memberId) + '&accountType=' + encodeURIComponent(accountType)
+      });
+      const data = await res.json();
+
+      if (!data.ok) {
+        document.getElementById('sub_error_text').textContent = data.message || data.error;
+        document.getElementById('sub_error').style.display = 'block';
+        return;
+      }
+
+      document.getElementById('conf_number').textContent = data.confirmationNumber;
+      document.getElementById('confirm_panel').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+{
+  "schemaVersion": "1.0",
+  "id": "b6f83f56-7ace-4f40-b1da-66469c13e8c6",
+  "name": "lookup_member_savings_balance",
+  "description": "Log into Shivam CU, look up member 12345, and read their savings balance",
+  "createdAt": "2026-09-02T08:09:00.750Z",
+  "targetApp": {
+    "name": "Shivam Credit Union Back Office",
+    "entryUrl": "http://localhost:3847",
+    "tenantId": "shivam-cu-demo",
+    "appVariant": "v2.4.1"
+  },
+  "parameters": [
+    {
+      "name": "username",
+      "type": "string",
+      "description": "Login username",
+      "required": true,
+      "sensitive": false
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "description": "Login password",
+      "required": true,
+      "sensitive": true
+    },
+    {
+      "name": "memberId",
+      "type": "string",
+      "description": "Member number to look up",
+      "required": true,
+      "sensitive": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "savingsBalance",
+      "type": "string",
+      "description": "Savings account balance",
+      "extractPattern": "Savings Balance:\\s*\\$?([\\d,]+\\.?\\d*)"
+    },
+    {
+      "name": "memberName",
+      "type": "string",
+      "description": "Member name",
+      "extractPattern": "Member Name:\\s*(.+)"
+    },
+    {
+      "name": "memberStatus",
+      "type": "string",
+      "description": "Account status (active or frozen)",
+      "extractPattern": "Status:\\s*(active|frozen)"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "action": "fill",
+      "description": "Fill User ID",
+      "locator": {
+        "strategy": "table_row",
+        "name": "User ID",
+        "fallbacks": [
+          {
+            "strategy": "role",
+            "role": "textbox",
+            "name": "User ID"
+          }
+        ]
+      },
+      "parameterRef": "username",
+      "riskLevel": "safe"
+    },
+    {
+      "id": "step-2",
+      "action": "fill",
+      "description": "Fill Password",
+      "locator": {
+        "strategy": "table_row",
+        "name": "Password",
+        "fallbacks": [
+          {
+            "strategy": "role",
+            "role": "textbox",
+            "name": "Password"
+          }
+        ]
+      },
+      "parameterRef": "password",
+      "riskLevel": "safe"
+    },
+    {
+      "id": "step-3",
+      "action": "click",
+      "description": "Click Sign In",
+      "locator": {
+        "strategy": "role",
+        "role": "button",
+        "name": "Sign In",
+        "fallbacks": [
+          {
+            "strategy": "text",
+            "text": "Sign In"
+          }
+        ]
+      },
+      "riskLevel": "safe"
+    },
+    {
+      "id": "step-5",
+      "action": "switch_frame",
+      "description": "Switch to workframe iframe",
+      "value": "workframe",
+      "riskLevel": "safe"
+    },
+    {
+      "id": "step-4",
+      "action": "click",
+      "description": "Already logged in. Next step is to click Member Account Inquiry to proceed to member lookup.",
+      "locator": {
+        "strategy": "text",
+        "text": "Member Account Inquiry"
+      },
+      "riskLevel": "safe"
+    },
+    {
+      "id": "step-6",
+      "action": "fill",
+      "description": "We're inside the workframe with the Member Number field visible. Fill it with the member ID 12345.",
+      "locator": {
+        "strategy": "table_row",
+        "name": "Member Number",
+        "fallbacks": [
+          {
+            "strategy": "role",
+            "role": "textbox",
+            "name": "Member Number"
+          }
+        ]
+      },
+      "parameterRef": "memberId",
+      "riskLevel": "safe"
+    },
+    {
+      "id": "step-7",
+      "action": "click",
+      "description": "Click Search button",
+      "locator": {
+        "strategy": "role",
+        "role": "button",
+        "name": "Search",
+        "fallbacks": [
+          {
+            "strategy": "text",
+            "text": "Search"
+          }
+        ]
+      },
+      "riskLevel": "safe"
+    }
+  ],
+  "checkpoint": {
+    "description": "Member details panel visible with savings balance",
+    "locator": {
+      "strategy": "role",
+      "role": "cell",
+      "name": "Savings Balance",
+      "fallbacks": [
+        {
+          "strategy": "text",
+          "text": "Savings Balance"
+        }
+      ]
+    },
+    "expectedText": "Savings Balance"
+  },
+  "errorHandlers": [
+    {
+      "matchText": "No member found",
+      "outcome": "business_outcome",
+      "outcomeCode": "MEMBER_NOT_FOUND"
+    },
+    {
+      "matchText": "Member not found",
+      "outcome": "business_outcome",
+      "outcomeCode": "MEMBER_NOT_FOUND"
+    },
+    {
+      "matchText": "account is frozen",
+      "outcome": "business_outcome",
+      "outcomeCode": "ACCOUNT_FROZEN"
+    },
+    {
+      "matchPattern": "session.*expired|timeout",
+      "outcome": "recoverable",
+      "outcomeCode": "SESSION_TIMEOUT",
+      "recoveryStep": {
+        "id": "recovery-relogin",
+        "action": "navigate",
+        "description": "Re-login after session timeout",
+        "value": "http://localhost:3847/login.html",
+        "riskLevel": "safe"
+      }
+    }
+  ],
+  "lifecycle": {
+    "version": "1.0.0",
+    "status": "approved",
+    "correlationId": "e516d752-690d-40f0-bae3-3ff310c90844",
+    "lastVerifiedAt": "2026-09-02T08:27:17.965Z",
+    "promotedAt": "2026-09-02T08:27:17.965Z",
+    "consecutiveFailures": 0
+  },
+  "metadata": {
+    "recordedBy": "discovery",
+    "discoveryModel": "claude-sonnet-5",
+    "discoveryRunId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+    "tags": [
+      "member-lookup",
+      "demo"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+*.log
+.DS_Store
+playwright-report/
+test-results/
+evidence/screenshots/discovery-fail-*.png
+!evidence/runs/
+!evidence/replay-runs.jsonl

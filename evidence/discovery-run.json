@@ -1,0 +1,314 @@
+{
+  "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+  "correlationId": "e516d752-690d-40f0-bae3-3ff310c90844",
+  "success": true,
+  "stepsExecuted": 6,
+  "goal": "Log into Shivam CU, look up member 12345, and read their savings balance",
+  "startedAt": "2026-09-02T08:08:39.721Z",
+  "completedAt": "2026-09-02T08:09:00.750Z",
+  "dateTime": {
+    "started": "2026-09-02 01:08:39.721",
+    "completed": "2026-09-02 01:09:00.750"
+  },
+  "artifactId": "b6f83f56-7ace-4f40-b1da-66469c13e8c6",
+  "runMetrics": {
+    "phase": "discovery",
+    "correlationId": "e516d752-690d-40f0-bae3-3ff310c90844",
+    "provider": "anthropic",
+    "model": "claude-sonnet-5",
+    "durationMs": 21029,
+    "llmCalls": 6,
+    "llmLatencyMs": {
+      "p50": 2645,
+      "p95": 4592,
+      "total": 18143
+    },
+    "tokenUsage": {
+      "input": 7817,
+      "output": 836
+    },
+    "estimatedCostUsd": 0.035991
+  },
+  "runLog": [
+    {
+      "timestamp": "2026-09-02T08:08:39.721Z",
+      "dateTime": "2026-09-02 01:08:39.721",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Starting discovery run",
+      "level": "info",
+      "data": {
+        "goal": "Log into Shivam CU, look up member 12345, and read their savings balance",
+        "entryUrl": "http://localhost:3847",
+        "correlationId": "e516d752-690d-40f0-bae3-3ff310c90844"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:39.800Z",
+      "dateTime": "2026-09-02 01:08:39.800",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Step 1: observing page",
+      "level": "debug",
+      "data": {
+        "url": "http://localhost:3847/login.html",
+        "title": "Shivam CU - Operator Login"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:42.529Z",
+      "dateTime": "2026-09-02 01:08:42.529",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Agent thought: Fill User ID",
+      "level": "info",
+      "data": {
+        "action": "fill",
+        "value": "shivam"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:42.530Z",
+      "dateTime": "2026-09-02 01:08:42.530",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Fill User ID",
+      "level": "info",
+      "stepId": "step-1",
+      "action": "fill",
+      "data": {
+        "locator": "table_row",
+        "name": "User ID",
+        "value": "shivam"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:43.091Z",
+      "dateTime": "2026-09-02 01:08:43.091",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Step 2: observing page",
+      "level": "debug",
+      "data": {
+        "url": "http://localhost:3847/login.html",
+        "title": "Shivam CU - Operator Login"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:44.557Z",
+      "dateTime": "2026-09-02 01:08:44.557",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Agent thought: Fill Password",
+      "level": "info",
+      "data": {
+        "action": "fill",
+        "value": "[REDACTED]"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:44.557Z",
+      "dateTime": "2026-09-02 01:08:44.557",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Fill Password",
+      "level": "info",
+      "stepId": "step-2",
+      "action": "fill",
+      "data": {
+        "locator": "table_row",
+        "name": "Password",
+        "value": "[REDACTED]"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:45.080Z",
+      "dateTime": "2026-09-02 01:08:45.080",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Step 3: observing page",
+      "level": "debug",
+      "data": {
+        "url": "http://localhost:3847/login.html",
+        "title": "Shivam CU - Operator Login"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:49.672Z",
+      "dateTime": "2026-09-02 01:08:49.672",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Agent thought: Click Sign In",
+      "level": "info",
+      "data": {
+        "action": "click"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:49.672Z",
+      "dateTime": "2026-09-02 01:08:49.672",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Click Sign In",
+      "level": "info",
+      "stepId": "step-3",
+      "action": "click",
+      "data": {
+        "locator": "role",
+        "name": "Sign In"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:50.232Z",
+      "dateTime": "2026-09-02 01:08:50.232",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Step 4: observing page",
+      "level": "debug",
+      "data": {
+        "url": "http://localhost:3847/main.html",
+        "title": "Shivam CU - Main Menu"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:52.816Z",
+      "dateTime": "2026-09-02 01:08:52.816",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Agent thought: Already logged in. Next step is to click Member Account Inquiry to proceed to member lookup.",
+      "level": "info",
+      "data": {
+        "action": "click"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:52.816Z",
+      "dateTime": "2026-09-02 01:08:52.816",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Already logged in. Next step is to click Member Account Inquiry to proceed to member lookup.",
+      "level": "info",
+      "stepId": "step-4",
+      "action": "click",
+      "data": {
+        "locator": "text",
+        "name": "Member Account Inquiry"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:52.880Z",
+      "dateTime": "2026-09-02 01:08:52.880",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Iframe loaded — switched to workframe",
+      "level": "info"
+    },
+    {
+      "timestamp": "2026-09-02T08:08:53.400Z",
+      "dateTime": "2026-09-02 01:08:53.400",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Step 5: observing page",
+      "level": "debug",
+      "data": {
+        "url": "http://localhost:3847/member-lookup.html",
+        "title": "Member Account Inquiry"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:56.045Z",
+      "dateTime": "2026-09-02 01:08:56.045",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Agent thought: We're inside the workframe with the Member Number field visible. Fill it with the member ID 12345.",
+      "level": "info",
+      "data": {
+        "action": "fill",
+        "value": "12345"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:56.045Z",
+      "dateTime": "2026-09-02 01:08:56.045",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "We're inside the workframe with the Member Number field visible. Fill it with the member ID 12345.",
+      "level": "info",
+      "stepId": "step-6",
+      "action": "fill",
+      "data": {
+        "locator": "table_row",
+        "name": "Member Number",
+        "value": "12345"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:08:56.060Z",
+      "dateTime": "2026-09-02 01:08:56.060",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Member ID filled — auto-clicking Search",
+      "level": "info"
+    },
+    {
+      "timestamp": "2026-09-02T08:08:56.621Z",
+      "dateTime": "2026-09-02 01:08:56.621",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Step 6: observing page",
+      "level": "debug",
+      "data": {
+        "url": "http://localhost:3847/member-lookup.html",
+        "title": "Member Account Inquiry"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:09:00.749Z",
+      "dateTime": "2026-09-02 01:09:00.749",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Agent thought: Member found, extracted savings balance and account status",
+      "level": "info",
+      "data": {
+        "action": "done"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:09:00.750Z",
+      "dateTime": "2026-09-02 01:09:00.750",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Goal achieved — artifact created",
+      "level": "info",
+      "data": {
+        "capabilityId": "b6f83f56-7ace-4f40-b1da-66469c13e8c6"
+      }
+    },
+    {
+      "timestamp": "2026-09-02T08:09:00.750Z",
+      "dateTime": "2026-09-02 01:09:00.750",
+      "runId": "9988e5d3-c43b-4fd3-9fc8-d655464b8086",
+      "phase": "discovery",
+      "message": "Discovery LLM metrics",
+      "level": "info",
+      "data": {
+        "phase": "discovery",
+        "correlationId": "e516d752-690d-40f0-bae3-3ff310c90844",
+        "provider": "anthropic",
+        "model": "claude-sonnet-5",
+        "durationMs": 21029,
+        "llmCalls": 6,
+        "llmLatencyMs": {
+          "p50": 2645,
+          "p95": 4592,
+          "total": 18143
+        },
+        "tokenUsage": {
+          "input": 7817,
+          "output": 836
+        },
+        "estimatedCostUsd": 0.035991
+      }
+    }
+  ]
+}
