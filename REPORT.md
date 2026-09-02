@@ -2,7 +2,7 @@
 
 ## 1. Architecture
 
-### What the system does (one sentence)
+### What the system does
 
 An LLM **discovers** how to complete a task in a legacy UI once; the run is saved as a **capability artifact**; production replays that artifact **deterministically** with no LLM in the loop.
 
@@ -13,28 +13,30 @@ An LLM **discovers** how to complete a task in a legacy UI once; the run is save
 3. **Replay** — Given the artifact + inputs (e.g. `memberId=12345`), the replay engine executes the same steps with no LLM. It returns success, a business outcome (e.g. member not found), or a failure with evidence.
 4. **Escalate (when needed)** — If discovery or replay cannot proceed safely, automation **pauses**, a human uses the **same browser session**, then automation **resumes**.
 
+
+
 ### Architecture diagram
 
 ```mermaid
 flowchart TB
   subgraph pipeline [Main pipeline]
     Goal[Goal in natural language]
-    Discover[Discovery Agent\nLLM observe → decide → act]
-    Artifact[Capability Artifact\nJSON, versioned, reviewable]
-    Replay[Replay Engine\nno LLM, deterministic]
-    Result[Structured result\nsuccess | business_outcome | failure]
+    Discover["Discovery Agent - LLM observe, decide, act"]
+    Artifact["Capability Artifact - JSON, versioned"]
+    Replay["Replay Engine - deterministic, no LLM"]
+    Result["Structured result - success, business_outcome, failure"]
     Goal --> Discover --> Artifact --> Replay --> Result
   end
 
-  subgraph cross [Cross-cutting — all phases]
-    Surface[Surface Driver\nPlaywright today]
-    Safety[Safety Guard\nallowlists + redaction]
-    Evidence[Evidence / runLog\nJSON + screenshots]
+  subgraph cross [Cross-cutting - all phases]
+    Surface["Surface Driver - Playwright"]
+    Safety["Safety Guard - allowlists and redaction"]
+    Evidence["Evidence and runLog - JSON and screenshots"]
   end
 
   subgraph escalate [Human escalation]
-    EscMgr[Escalation Manager\npause / resume]
-    Human[Human operator\nCLI mock console]
+    EscMgr["Escalation Manager - pause and resume"]
+    Human["Human operator - CLI mock"]
   end
 
   Discover --> Surface
@@ -49,38 +51,48 @@ flowchart TB
   EscMgr --> Replay
 ```
 
+
+
 **How to read this:** Discovery and Replay both drive the UI through the **Surface Driver**. The **Safety Guard** wraps every action (allowed domains/routes, redacted secrets). **Escalation** pauses automation on the live session — it does not start a new browser.
 
 ### Main components
 
-| Component | Role | LLM used? |
-|-----------|------|-----------|
-| `DiscoveryAgent` | Runs observe→decide→act loop until goal or stuck | Yes |
-| `CapabilityArtifact` | Typed, reusable description of the flow | No |
-| `ReplayEngine` | Executes artifact steps + checkpoint + error handlers | No |
-| `SurfaceDriver` | Perceive and act on UI (Playwright for web) | No |
-| `SafetyGuard` | Allowlists, risk checks, secret redaction | No |
-| `EscalationManager` | Pause, human handoff, resume same session | No |
+
+| Component            | Role                                                  | LLM used? |
+| -------------------- | ----------------------------------------------------- | --------- |
+| `DiscoveryAgent`     | Runs observe→decide→act loop until goal or stuck      | Yes       |
+| `CapabilityArtifact` | Typed, reusable description of the flow               | No        |
+| `ReplayEngine`       | Executes artifact steps + checkpoint + error handlers | No        |
+| `SurfaceDriver`      | Perceive and act on UI (Playwright for web)           | No        |
+| `SafetyGuard`        | Allowlists, risk checks, secret redaction             | No        |
+| `EscalationManager`  | Pause, human handoff, resume same session             | No        |
+
+
+
 
 ### Key decisions (summary)
 
 - **Single-process monolith** — one repo, `npm run demo`, no queues or K8s for the take-home.
-- **`SurfaceDriver` seam** — UI driver is swappable; artifact schema is not Playwright-specific.
+- `SurfaceDriver` **seam** — UI driver is swappable; artifact schema is not Playwright-specific.
 - **Zod-validated artifact** — invalid artifacts fail before they touch a browser.
 - **Legacy-first locators** — `table_row` / role / text, not CSS `#id` (matches real bank UIs).
+
+
 
 ### Trade-offs
 
 Six decisions that shaped the system. Each one favors a working, reviewable take-home over production completeness.
 
-| Choice | Why | Cost |
-|--------|-----|------|
-| **Playwright + DOM/a11y** over screenshot + pixel clicks | Legacy bank UIs are messy but stable. Label-based targeting (“Sign In”, “User ID:”) survives layout tweaks; coordinates do not. | Web-only for now. Canvas-only apps would need a different driver. |
-| **LLM in discovery only** — replay never calls the model | Replay must be cheap, fast, and identical on every run. Production agents invoke artifacts, not re-reason about the UI. | Broken locators fail or escalate; replay cannot adapt to surprise UI changes alone. |
-| **Structured artifact** over LLM transcript | Callers need typed parameters, outputs, and error codes — not prose and hidden credentials. | Up-front schema work. Failed discovery runs are not automatically replayable. |
-| **Semantic locators** (`table_row`, role, text) over CSS `#id` | Real core banking screens do not ship with test IDs. Operators read row labels; our locators match that. | Breaks if label copy or table structure changes. More resolver logic than `#username`. |
-| **Single-process monolith** over queues and workers | A reviewer should `git clone`, run the mock app, and see the full loop in minutes. | No horizontal scale, job API, or per-tenant isolation in this repo. |
-| **CLI operator mock** over a co-browsing console | Pause/resume on the *same* browser session is the hard problem; the UI is replaceable. | No screen-share, routing, or supervisor dashboard. |
+
+| Choice                                                         | Why                                                                                                                             | Cost                                                                                   |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| **Playwright + DOM/a11y** over screenshot + pixel clicks       | Legacy bank UIs are messy but stable. Label-based targeting (“Sign In”, “User ID:”) survives layout tweaks; coordinates do not. | Web-only for now. Canvas-only apps would need a different driver.                      |
+| **LLM in discovery only** — replay never calls the model       | Replay must be cheap, fast, and identical on every run. Production agents invoke artifacts, not re-reason about the UI.         | Broken locators fail or escalate; replay cannot adapt to surprise UI changes alone.    |
+| **Structured artifact** over LLM transcript                    | Callers need typed parameters, outputs, and error codes — not prose and hidden credentials.                                     | Up-front schema work. Failed discovery runs are not automatically replayable.          |
+| **Semantic locators** (`table_row`, role, text) over CSS `#id` | Real core banking screens do not ship with test IDs. Operators read row labels; our locators match that.                        | Breaks if label copy or table structure changes. More resolver logic than `#username`. |
+| **Single-process monolith** over queues and workers            | A reviewer should `git clone`, run the mock app, and see the full loop in minutes.                                              | No horizontal scale, job API, or per-tenant isolation in this repo.                    |
+| **CLI operator mock** over a co-browsing console               | Pause/resume on the *same* browser session is the hard problem; the UI is replaceable.                                          | No screen-share, routing, or supervisor dashboard.                                     |
+
 
 **Core assumption:** Record-once / replay-many works because enterprise UIs change slowly. Playwright is the web implementation; `SurfaceDriver` is the seam for desktop later.
 
@@ -89,6 +101,7 @@ Six decisions that shaped the system. Each one favors a working, reviewable take
 The artifact is an **agent-invocable contract** — a calling agent must know what to pass in, what comes back, and what can go wrong. It is not a dump of the LLM transcript.
 
 **Core fields:**
+
 - `parameters[]` — typed inputs the calling agent supplies (e.g., `memberId: string`)
 - `outputs[]` — typed return values with extraction locators (e.g., `savingsBalance: string`)
 - `steps[]` — ordered actions with locators, values, and risk levels
@@ -96,6 +109,7 @@ The artifact is an **agent-invocable contract** — a calling agent must know wh
 - `errorHandlers[]` — pattern-matched runtime conditions with outcome classification
 
 **Why this shape:**
+
 - An AI agent calling this capability needs to know what to pass in and what to expect back — hence typed parameters and outputs, not just steps.
 - Locators carry a `strategy` enum and `fallbacks[]` chain, making robustness reasoning explicit and reviewable.
 - `errorHandlers` separate business outcomes ("member not found") from hard failures, which is the most common design mistake in this domain.
@@ -103,11 +117,14 @@ The artifact is an **agent-invocable contract** — a calling agent must know wh
 - `metadata.recordedBy` tracks provenance (discovery vs human vs import) for approval workflows.
 - `targetApp.tenantId` and `appVariant` fields prepare for multi-tenant reuse without requiring it now.
 
+
+
 ## 3. Determinism & error handling
 
 Replay must behave the same way every time: same inputs → same steps → same result. The LLM is never consulted during replay.
 
 **How determinism is achieved:**
+
 1. **Locator resolution** tries primary strategy, then fallbacks in order, with explicit waits for element visibility.
 2. **No LLM in replay path** — every decision is encoded in the artifact.
 3. **Checkpoint verification** after all steps complete — asserts expected text/state is present.
@@ -116,15 +133,17 @@ Replay must behave the same way every time: same inputs → same steps → same 
 
 **Three outcome classes** (the most important design choice in this project):
 
-| Class | Example | Replay behavior |
-|---|---|---|
-| `business_outcome` | "No member found", empty member ID, frozen account | Return structured result with outcome code; not a crash |
-| `recoverable` | Session timeout, unexpected dialog | Attempt recovery step if defined; retry |
-| `hard_failure` | Element not found, checkpoint failed, unknown error | Stop, screenshot, return debug info (step, expected, observed) |
+
+| Class              | Example                                             | Replay behavior                                                |
+| ------------------ | --------------------------------------------------- | -------------------------------------------------------------- |
+| `business_outcome` | "No member found", empty member ID, frozen account  | Return structured result with outcome code; not a crash        |
+| `recoverable`      | Session timeout, unexpected dialog                  | Attempt recovery step if defined; retry                        |
+| `hard_failure`     | Element not found, checkpoint failed, unknown error | Stop, screenshot, return debug info (step, expected, observed) |
+
 
 **Critical design choice:** Business errors often appear *after* a step succeeds (e.g. clicking Search returns an inline error, not a thrown exception). We check `errorHandlers` both after each step and before checkpoint verification — so "member not found" is classified correctly instead of becoming a misleading `CHECKPOINT_FAILED`.
 
-**Policy module (`src/replay/policy.ts`):** Error classification and routing are table-driven — `classifyPageOutcome` → `resolveErrorPolicy` decides whether to return, recover, escalate, or fail. Keeps the engine as an executor, not a policy dump.
+**Policy module (**`src/replay/policy.ts`**):** Error classification and routing are table-driven — `classifyPageOutcome` → `resolveErrorPolicy` decides whether to return, recover, escalate, or fail. Keeps the engine as an executor, not a policy dump.
 
 **Run correlation:** Every discovery run generates a `correlationId` propagated to the artifact lifecycle, replay results, and evidence index — linking discovery → replay → escalation in audit logs.
 
@@ -132,19 +151,23 @@ Replay must behave the same way every time: same inputs → same steps → same 
 
 **Edge cases handled:**
 
-| Edge case | Handling |
-|---|---|
-| Member not found (99999) | `business_outcome: MEMBER_NOT_FOUND` |
-| Empty member ID | `hard_failure: EMPTY_PARAMETER` (pre-flight) or `VALIDATION_ERROR` (in-app) |
-| Frozen account (11111) | Lookup succeeds; `outputs.memberStatus: "frozen"` in logs |
-| Wrong login credentials | Step fails at fill/click; screenshot captured |
-| Steps out of order in artifact | Sorted by step id before execution |
-| iframe not loaded | `switch_frame` step + auto-switch after Member Inquiry click |
-| LLM omits css/value during discovery | `enrichAction` infers from page phase and interactive elements |
-| Agent loop (same action 3x) | Loop detection injects recovery hint |
-| Domain or route outside allowlist | `POLICY_VIOLATION` before/at/after each action |
-| Irreversible step | Escalates with `CONFIRMATION_REQUIRED` |
-| Sensitive params in logs | Redacted via `sensitive: true` on parameter schema |
+
+| Edge case                            | Handling                                                                    |
+| ------------------------------------ | --------------------------------------------------------------------------- |
+| Member not found (99999)             | `business_outcome: MEMBER_NOT_FOUND`                                        |
+| Empty member ID                      | `hard_failure: EMPTY_PARAMETER` (pre-flight) or `VALIDATION_ERROR` (in-app) |
+| Frozen account (11111)               | Lookup succeeds; `outputs.memberStatus: "frozen"` in logs                   |
+| Wrong login credentials              | Step fails at fill/click; screenshot captured                               |
+| Steps out of order in artifact       | Sorted by step id before execution                                          |
+| iframe not loaded                    | `switch_frame` step + auto-switch after Member Inquiry click                |
+| LLM omits css/value during discovery | `enrichAction` infers from page phase and interactive elements              |
+| Agent loop (same action 3x)          | Loop detection injects recovery hint                                        |
+| Domain or route outside allowlist    | `POLICY_VIOLATION` before/at/after each action                              |
+| Irreversible step                    | Escalates with `CONFIRMATION_REQUIRED`                                      |
+| Sensitive params in logs             | Redacted via `sensitive: true` on parameter schema                          |
+
+
+
 
 ## 4. Heterogeneity & multi-tenant
 
@@ -153,6 +176,7 @@ Replay must behave the same way every time: same inputs → same steps → same 
 **Surface abstraction:** The `SurfaceDriver` interface is the seam. Web (Playwright), legacy web (same driver, different locator strategies), and desktop (future: OS accessibility APIs like AXUIElement on macOS, UI Automation on Windows) all implement the same interface. The artifact schema is surface-agnostic — it records actions and locators, not Playwright-specific selectors.
 
 **Multi-tenant reuse:** Artifacts include `targetApp.tenantId` and `appVariant`. The design supports:
+
 - **Shared base artifact** for a vendor product (e.g., "Fiserv DNA member lookup")
 - **Per-tenant overrides** for branding, URL, or locator differences
 - **Canonicalization** of concrete values into parameterized patterns (`/member/12345` → `/member/:id`)
@@ -165,11 +189,13 @@ I did not implement multi-tenant plumbing — the schema fields and REPORT desig
 When automation cannot safely continue, a human takes over the **same live browser session** — not a fresh one — then hands control back.
 
 **When escalation triggers:**
+
 - Discovery agent returns `action: "stuck"` after 3 consecutive failures
 - Replay hits an irreversible step (`riskLevel: "irreversible"`)
 - Replay encounters an unrecoverable error
 
 **Handoff steps:**
+
 1. `EscalationManager` creates an intervention request with full context (goal, step, screenshot, session ID)
 2. `PlaywrightSurface.pauseAutomation()` sets `controller: "human"` — all automated actions throw if attempted
 3. Human operates the **same live browser session** (not a fresh one)
@@ -184,6 +210,7 @@ The operator console is a minimal CLI, not a full co-browsing UI. The control-tr
 Regulated financial data requires guardrails on *what* the agent can do and *what* gets persisted.
 
 **Allowlist model:**
+
 - Configurable `allowedDomains` via `ALLOWED_DOMAINS` (default: localhost only)
 - Configurable `allowedRoutes` via `ALLOWED_ROUTES` (path patterns with `*` wildcards)
 - Per-action-type allowlist via `ALLOWED_ACTIONS` / `BLOCKED_ACTIONS`
@@ -192,10 +219,12 @@ Regulated financial data requires guardrails on *what* the agent can do and *wha
 - Artifact pre-flight validation rejects out-of-policy steps before browser actions
 
 **Risk classification:**
+
 - Steps tagged `safe`, `risky`, or `irreversible`
 - `risky` and `irreversible` steps trigger escalation (human confirmation required before execution)
 
 **Data handling (production-style secrets):**
+
 - **Never encrypt secrets into logs** — production systems redact or omit them entirely; encrypted ciphertext in logs still leaks if the key is nearby
 - Login credentials stored as `parameterRef` only — no literal secrets in artifacts
 - `SecretProvider` injects sensitive values at runtime from `DEMO_USERNAME` / `DEMO_PASSWORD` (or Vault/KMS in production)
@@ -225,6 +254,8 @@ Extras that go past the minimum brief but stay small and testable:
 - **Balance redaction in screenshots** — blur savings/checking amounts only; passwords stay out of JSON logs
 - **Discovery rate limit** — token bucket on LLM calls so stuck loops do not burn API budget
 
+
+
 ### Intentionally out of scope
 
 Not forgotten — deferred so the core loop stays deep instead of wide:
@@ -235,6 +266,8 @@ Not forgotten — deferred so the core loop stays deep instead of wide:
 - Agent catalog / tool-calling API to invoke capabilities by name
 - Single-step LLM recovery when replay fails
 - Cross-tenant artifact reuse demo and replay flakiness (N-run) reporting
+
+
 
 ### Where I'd invest next
 
